@@ -10,11 +10,11 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 
-# Command start handler
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
     await message.answer(
         f'Hello, {message.from_user.first_name}! Here is the bot for Taylor Swift fans with lyrics, albums info and quotes')
+
 
 @dp.message(Command("help"))
 async def cmd_help(message: Message):
@@ -32,7 +32,6 @@ async def cmd_help(message: Message):
     await message.answer(str(help_text))
 
 
-# Generic message handler
 @dp.message(lambda message: True)
 async def handle_message(message: Message):
     user_text = message.text.strip()
@@ -51,7 +50,6 @@ async def handle_message(message: Message):
         await search_songs(message, user_text)
 
 
-# Function to search songs
 async def search_songs(message: Message, query: str):
     url = f"https://taylor-swift-api.vercel.app/api/songs/search/?name={query}"
     response = requests.get(url)
@@ -75,8 +73,6 @@ async def search_songs(message: Message, query: str):
     await message.answer(result)
 
 
-
-# Handler for /albums command
 @dp.message(Command("albums"))
 async def get_albums(message: Message):
     response = requests.get("https://taylor-swift-api.vercel.app/api/albums")
@@ -90,7 +86,6 @@ async def get_albums(message: Message):
     await message.answer(result)
 
 
-# Handler for /random_quote command
 @dp.message(Command("random_quote"))
 async def get_random_quote(message: Message):
     response = requests.get("https://taylor-swift-api.vercel.app/api/quotes")
@@ -103,7 +98,6 @@ async def get_random_quote(message: Message):
     await message.answer(quote)
 
 
-# Handler for /random_song command
 @dp.message(Command("random_song"))
 async def get_random_song(message: Message):
     response = requests.get("https://taylor-swift-api.vercel.app/api/songs/random")
@@ -117,7 +111,6 @@ async def get_random_song(message: Message):
     await message.answer(song)
 
 
-# Handler for /credits command
 @dp.message(Command("credits"))
 async def get_credits(message: Message):
     link = "https://t.me/south_russian"
@@ -142,7 +135,6 @@ async def get_random_album(message: Message):
         await message.answer(album_info)
 
 
-# Main function
 async def main():
     await dp.start_polling(bot)
 
